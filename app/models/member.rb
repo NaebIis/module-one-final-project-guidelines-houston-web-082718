@@ -10,4 +10,6 @@ class Member < ActiveRecord::Base
 # has_many :signups
 # has_many :classes, through: :signups
 # A member will have a name, an age and a gender.
+
+
 end
