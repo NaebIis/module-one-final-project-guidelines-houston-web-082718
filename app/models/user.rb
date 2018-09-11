@@ -4,6 +4,11 @@ class User < ActiveRecord::Base
     has_many :signup
     has_many :events, through: :signup
 
+    def user_info(username)
+        User.find_by(username: username).username
+
+    end
+
 
     def self.new_user
         puts "Type your new username"
