@@ -11,8 +11,9 @@ class User < ActiveRecord::Base
 
         username = gets.chomp.downcase
         User.create(username: username)
-        puts "Your username is #{username}"
-        status = "get_user"
+        # puts "Your username is #{username}"
+        # status = "get_user"
+        pass(username)
     end
 
     def self.not_a_member
@@ -26,8 +27,9 @@ class User < ActiveRecord::Base
             puts "Your username is #{name}"
             # status = "get_user"
             User.pass(name)
-        else
+            else input == "no"
                 puts "See you next time!"
+                status = "exit"
             end
         end
 

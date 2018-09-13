@@ -62,7 +62,8 @@ class Cli
                     current_username = Cli.new_username
                     status = "my_stuff"
                 when "new_user"
-                    status = User.new_user
+                    current_username = User.new_user
+                    status = "my_stuff"
                 when "not_a_member"
                     # status = User.not_a_member
                     current_username = User.not_a_member
@@ -203,11 +204,11 @@ class Cli
             new_signup("spinclass", username)
         elsif input == "intro to pilate" || input == "5"
             new_signup("Intro to pilate", username)
-        elsif input == "Swim class" || input == "3"
+        elsif input == "swim class" || input == "3"
             new_signup("Swim class", username)
         else 
-            puts "What are you tring to say?"
-            # status = "chosing_event"
+            puts "What are you trying to say?"
+            status = "chosing_event"
         end
         puts "\n"
         puts "You are now signed up for an event"
