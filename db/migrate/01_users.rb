@@ -8,4 +8,4 @@ class Users < ActiveRecord::Migration
             t.string :username
         end
     end
-end
+end 
