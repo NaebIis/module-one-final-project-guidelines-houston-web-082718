@@ -7,75 +7,62 @@ class Cli
         current_username = nil
         while true
             if current_username
-                if status == "get_user"
+                case status
+                when"get_user"
                     status = "event_list"
-                end
-
-                if status == "event_list"
+                when "event_list"
                     status = Cli.event_list(current_username)
-                end
-                
-                if status == "new_user"
-                    status = new_user(current_username)
-                end
-
-                if status == "my_stuff"
+                when "new_user"
+                    status = User.new_user(current_username)
+                when "my_stuff"
                     status = Cli.my_stuff(current_username)
-                end
-# binding.pry
-                if status == "event_list_new_signup"
+                when "event_list_new_signup"
                     status = Cli.event_list_new_signup(current_username)
-                end
-
-                if status == "user_info"
+                when "user_info"
                     status = Cli.user_info(current_username)
                     # binding.pry
-                end
-
-                if status == "user_classes"
+                when "type_username_again" 
+                    # binding.pry
+                    current_username = User.type_username_again
+                    status = "my_stuff"
+                when "user_classes"
                     status = Cli.user_classes(current_username)
-                end
-
-                if status == "chosing_event"
+                when "chosing_event"
                     status = Cli.chosing_event(current_username)
-                end
-
-                if status == "delete"
+                when "delete"
                     status = Cli.delete(current_username)
-                end
-
-                if status == "new_username"
-                    status = Cli.new_username(current_username)
-                    current_username = nil
-                end
-
-                if status == "event_list_new_signup"
+                when "new_username"
+                    current_username = Cli.new_username(current_username)
+                    status = "my_stuff"
+                when "event_list_new_signup"
                     status = Cli.event_list_new_signup(current_username)
-                end
-
-                if status == "exit"
+                when "exit"
                     break
                 end
             else
-                if status == "start"
+                case status
+                when "start"
                     status = start
-                end
-                if status == "run_file"
+                when "run_file"
                     status = run_file
-                end
-
-                if status == "get_user"
-                    current_username = User.get_user
+                when "get_user"
                     # binding.pry
+                    
+                    if current_username = User.get_user
                     status = "event_list"
-                end
-
-                if status == "new_username"
-                    status = Cli.new_username
-                end
-
-                if status == "new_user"
+                    else
+                        #binding.pry
+                        status = "not_a_member"
+                    end
+                when "new_username"
+                    current_username = Cli.new_username
+                    status = "my_stuff"
+                when "new_user"
                     status = User.new_user
+                when "not_a_member"
+                    status = User.not_a_member
+                when "exit"
+                    break
                 end
 
             end
@@ -148,8 +135,12 @@ class Cli
             puts "Goodbyeeeeeee!"
             status = "exit"
         else
+            puts "\n"
+            puts "\n"
             puts "What?"
-            # self.my_stuff(username)
+            puts "\n"
+            puts "\n"
+            status = "my_stuff"
         end
     end
 
@@ -198,16 +189,19 @@ class Cli
             #     puts event.name
             # end
         input = gets.chomp.downcase
-        if input == "yoga" || "1"
+        if input == "yoga" || input =="1"
             new_signup("yoga", username)
-        elsif input == "kickboxing" || "4"
+        elsif input == "kickboxing" || input == "4"
             new_signup("Kickboxing", username)
-        elsif input == "spinclass" || "2"
+        elsif input == "spinclass" || input == "2"
             new_signup("spinclass", username)
-        elsif input == "intro to pilate" || "5"
+        elsif input == "intro to pilate" || input == "5"
             new_signup("Intro to pilate", username)
-        else input == "Swim class" || "3"
+        elsif input == "Swim class" || input == "3"
             new_signup("Swim class", username)
+        else 
+            puts "What are you tring to say?"
+            # status = "chosing_event"
         end
         puts "\n"
         puts "You are now signed up for an event"
@@ -227,10 +221,6 @@ class Cli
     def self.new_signup(event, username)
         Signup.create(class_name: event, username: username)
     end
-
-    
-
-    
 
     def self.event_list_new_signup(username)
         puts "Would you like to sign-up for classes?"
@@ -255,13 +245,17 @@ class Cli
 
 
     def self.new_username(username)
-        puts "What would you like your new username to be?"
-            new_name = gets.chomp
-                # User.update(username: new_name)
-               user = User.find_by(username: username)
-               user.username = new_name
-               user.save
-            puts "Your new username is '#{new_name}'."
-        status = "get_user" 
-    end  
+    puts "What would you like your new username to be?"
+        new_name = gets.chomp
+            # User.update(username: new_name)
+            user = User.find_by(username: username)
+            user.username = new_name
+            user.save
+            puts "\n"    
+        puts "Your new username is '#{new_name}'."
+        puts "\n"
+        puts "\n"
+        new_name    
+        # binding.pry
+    end
 end
