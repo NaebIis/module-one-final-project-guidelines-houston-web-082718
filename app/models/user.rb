@@ -16,7 +16,6 @@ class User < ActiveRecord::Base
     end
 
     def self.not_a_member
-
         puts "You are not a member"
         puts "would you like to join our gym?"
         input = gets.chomp.downcase
@@ -25,12 +24,23 @@ class User < ActiveRecord::Base
             name = gets.chomp.downcase
             User.create(username: name)
             puts "Your username is #{name}"
-            status = "get_user"
+            # status = "get_user"
+            User.pass(name)
         else
                 puts "See you next time!"
             end
-
         end
+
+    def self.pass(username)
+        # puts "Type your username"
+        # username = gets.chomp
+        # if User.find_by(username: username)
+            puts "Hello #{username}."
+            username
+        # else 
+        #     false
+        # end
+    end
 
     def type_username_again
         puts "Type your username again to verify"

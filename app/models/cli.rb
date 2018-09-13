@@ -46,21 +46,27 @@ class Cli
                 when "run_file"
                     status = run_file
                 when "get_user"
-                    # binding.pry
-                    
                     if current_username = User.get_user
                     status = "event_list"
                     else
                         #binding.pry
                         status = "not_a_member"
                     end
+
+                when "my_stuff"
+                    current_username = User.get_user
+                    status = "my_stuff"
+                    
+            
                 when "new_username"
                     current_username = Cli.new_username
                     status = "my_stuff"
                 when "new_user"
                     status = User.new_user
                 when "not_a_member"
-                    status = User.not_a_member
+                    # status = User.not_a_member
+                    current_username = User.not_a_member
+                    status = "my_stuff"
                 when "exit"
                     break
                 end
