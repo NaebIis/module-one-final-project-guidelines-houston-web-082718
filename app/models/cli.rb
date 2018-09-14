@@ -144,7 +144,7 @@ class Cli
     l               = message.length
     number_of_stars = 80
     puts "\n\n"
-    puts "*".colorize (:red) * number_of_stars
+    puts "*".colorize(:red) * number_of_stars
     puts "*".colorize(:red) + "\s" * (number_of_stars - 2) + "*".colorize(:red)
     puts "*".colorize(:red) + "\s" * ((number_of_stars - 2 - l) / 2) + message.colorize(:yellow) + "\s" * ((number_of_stars - 2 - l) / 2) + "*".colorize(:red)
     puts "*".colorize(:red) + "\s" * (number_of_stars - 2) + "*".colorize(:red)
@@ -245,15 +245,15 @@ class Cli
     print "#{"\s" * 5}Which class would you like to join? "
     input = gets.chomp.downcase
     if input == 'yoga' || input == '1'
-      new_signup('1. Yoga Class', username)
+      new_signup('Yoga Class', username)
     elsif input == 'spinning' || input == '2'
-      new_signup('2. Spinning Class', username)
+      new_signup('Spinning Class', username)
     elsif input == 'swimming' || input == '3'
-      new_signup('3. Swimming Class', username)
+      new_signup('Swimming Class', username)
     elsif input == 'kickboxing' || input == '4'
-      new_signup('4. Kickboxing Class', username)
+      new_signup('Kickboxing Class', username)
     elsif input == 'pilate' || input == '5'
-      new_signup('5. Pilate Class', username)
+      new_signup('Pilate Class', username)
     else
       puts "\s"
       random_fun_responds
