@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   def self.new_user
     puts ""
-    puts "\s" * 5 + "Type your new username"
+    puts "\s" * 5 + "Type your new username".colorize(:blue)
     print "\s" * 5
     username = gets.chomp.downcase
     User.create(username: username)
@@ -16,53 +16,43 @@ class User < ActiveRecord::Base
 
   def self.not_a_member
     puts ""
-    puts "\s" * 5 + "You are not a member!\n"
-    puts "\s" * 5 + "would you like to join our gym?"
+    puts "\s" * 5 + "You are not a member!\n".colorize(:blue)
+    puts "\s" * 5 + "Would you like to join our gym?".colorize(:blue)
     print "\s" * 5
     input = gets.chomp.downcase
     if input == "yes"
       puts ""
-      puts "\s" * 5 + 'What do you want your username to be?'
+      puts "\s" * 5 + 'What do you want your username to be?'.colorize(:blue)
       print "\s" * 5
       name = gets.chomp.downcase
       User.create(username: name)
       puts ""
-      puts "\s" * 5 + "OK! We got you, #{name}!\n"
+      puts "\s" * 5 + "OK! We got you, ".colorize(:blue) + " #{name}".colorize(:yellow) + "!\n"
       # status = "get_user"
       User.pass(name)
+      elsif input == "no"
+        puts ""
+        puts ""
+
     else
-      input == "no"
       status = "exit"
     end
   end
 
   def self.pass(username)
     puts ""
-    puts "\s" * 5 + "Hello #{username}."
+    puts "\s" * 5 + "Hello ".colorize(:blue) + "#{username}".colorize(:yellow) + "."
     username
-  end
-
-  def type_username_again
-    puts ""
-    puts "\s" * 5 + "Please type your username again to verify"
-    username = gets.chomp
-    if User.find_by(username: username)
-      username
-    else
-      puts ""
-      puts "\s" * 5 + "Error: Username does not match"
-      status = "my_stuff"
-    end
   end
 
   def self.get_user
     puts ""
-    puts "\s" * 5 + "Please type your username"
+    puts "\s" * 5 + "Please type your username".colorize(:blue)
     print "\s" * 5
     username = gets.chomp
     if User.find_by(username: username)
       puts ""
-      puts "\s" * 5 + "Hello #{username}. Welcome to our gym!\n"
+      puts "\s" * 5 + "Hello ".colorize(:blue) + "#{username}".colorize(:yellow) + ". Welcome to our gym!\n".colorize(:blue)
       username
     else
       false

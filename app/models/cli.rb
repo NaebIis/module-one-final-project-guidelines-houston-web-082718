@@ -12,8 +12,8 @@ class Cli
           status = Cli.event_list(current_username)
         when 'new_user'
           status = User.new_user(current_username)
-        when 'my_stuff'
-          status = Cli.my_stuff(current_username)
+        when 'menu_options'
+          status = Cli.menu_options(current_username)
         when 'event_list_new_signup'
           status = Cli.event_list_new_signup(current_username)
         when 'user_info'
@@ -22,7 +22,7 @@ class Cli
         when 'type_username_again'
           # binding.pry
           current_username = User.type_username_again
-          status           = 'my_stuff'
+          status           = 'menu_options'
         when 'user_classes'
           status = Cli.user_classes(current_username)
         when 'chosing_event'
@@ -31,7 +31,7 @@ class Cli
           status = Cli.delete(current_username)
         when 'new_username'
           current_username = Cli.new_username(current_username)
-          status           = 'my_stuff'
+          status           = 'menu_options'
         when 'event_list_new_signup'
           status = Cli.event_list_new_signup(current_username)
         when 'list_all_events'
@@ -39,7 +39,7 @@ class Cli
         when 'exit'
           puts ' '
           puts "\s" * 5 + 'See you next time!'
-          puts "#{"\s" * 5} #{"*" * 20 }  GOODBYE!  #{"*" * 20}"
+          puts "#{"\s" * 5} #{"*" * 20 }  GOODBYE!  #{"*" * 20}".colorize(:red)
           break
         end
       else
@@ -50,37 +50,41 @@ class Cli
           status = run_file
         when 'get_user'
           if current_username = User.get_user
-            status = 'event_list'
+            status = 'menu_options'
           else
             #binding.pry
             status = 'not_a_member'
           end
-        when 'my_stuff'
+        when 'menu_options'
           current_username = User.get_user
-          status           = 'my_stuff'
+          status           = 'menu_options'
         when 'new_username'
           current_username = Cli.new_username
-          status           = 'my_stuff'
+          status           = 'menu_options'
         when 'new_user'
           current_username = User.new_user
-          status           = 'my_stuff'
+          status           = 'menu_options'
         when 'not_a_member'
           # status = User.not_a_member
           current_username = User.not_a_member
-          status           = 'my_stuff'
+          if current_username != "exit"
+              status = 'menu_options'
+          else
+            status = "exit"
+            end
         when 'list_all_events'
           status = Cli.list_all_events
         when 'exit'
           puts ' '
           puts "\s" * 5 + 'See you next time!'
-          puts "#{"\s" * 5} #{"*" * 20 }  GOODBYE!  #{"*" * 20}"
+          puts "#{"\s" * 5} #{"*" * 20 }  GOODBYE!  #{"*" * 20}".colorize(:red)
           break
         end
       end
       if status == 'exit'
         puts ' '
         puts "\s" * 5 + 'See you next time!'
-        puts "#{"\s" * 5} #{"*" * 20 }  GOODBYE!  #{"*" * 20}"
+        puts "#{"\s" * 5} #{"*" * 20 }  GOODBYE!  #{"*" * 20}".colorize(:red)
         break
       end
     end
@@ -92,17 +96,17 @@ class Cli
     l               = message.length
     number_of_stars = 80
     puts "\n\n"
-    puts "*" * number_of_stars
-    puts "*" + "\s" * (number_of_stars - 2) + "*"
-    puts "*" + "\s" * ((number_of_stars - 2 - l) / 2) + message + "\s" * ((number_of_stars - 2 - l) / 2) + "*"
-    puts "*" + "\s" * (number_of_stars - 2) + "*"
-    puts "*" * number_of_stars
+    puts "*".colorize(:red) * number_of_stars
+    puts "*".colorize(:red) + "\s" * (number_of_stars - 2) + "*".colorize(:red)
+    puts "*".colorize(:red) + "\s" * ((number_of_stars - 2 - l) / 2) + message.colorize(:yellow) + "\s" * ((number_of_stars - 2 - l) / 2) + "*".colorize(:red)
+    puts "*".colorize(:red) + "\s" * (number_of_stars - 2) + "*". colorize(:red)
+    puts "*".colorize(:red) * number_of_stars
     puts "\n\n"
     status = 'run_file'
   end
 
   def run_file
-    puts "\s" * 5 + "Are you a member of our gym? (yes/no)"
+    puts "\s" * 5 + "Are you a member of Funky Gym?".colorize(:blue) + " (yes/no)"
     print "\s" * 5
     input = gets.chomp.downcase
     if input == 'yes'
@@ -112,42 +116,43 @@ class Cli
     elsif input == 'exit'
       status = 'exit'
     else
-      puts "\s" * 5 + 'Say again?? Type yes or no. If you wish to leave type exit'
+      puts ""
+      puts "\s" * 5 + 'Type'.colorize(:blue)+ ' yes' +' or'.colorize(:blue) + ' no' + '. If you wish to leave type exit'.colorize(:blue)
       status = 'run_file'
     end
   end
 
-  def self.event_list(username)
-    puts "\s" * 5 + 'Do you wish go to the menu options? Type yes or no.'
-    print "\s" * 5
-    input = gets.chomp.downcase
-    if input == 'yes'
-      status = 'my_stuff'
-    elsif input == 'no'
-      status = 'event_list_new_signup'
-    elsif input == 'exit'
-      status = 'exit'
-    else
-      puts "\s" * 5 + "What??? I didn't get that, #{username.capitalize}!"
-      status = 'event_list'
-    end
-  end
+  # def self.event_list(username)
+  #   puts "\s" * 5 + 'Do you wish go to the menu options? Type yes or no.'
+  #   print "\s" * 5
+  #   input = gets.chomp.downcase
+  #   if input == 'yes'
+  #     status = 'menu_options'
+  #   elsif input == 'no'
+  #     status = 'event_list_new_signup'
+  #   elsif input == 'exit'
+  #     status = 'exit'
+  #   else
+  #     puts "\s" * 5 + "What??? I didn't get that, #{username.capitalize}!"
+  #     status = 'event_list'
+  #   end
+  # end
 
-  def self.my_stuff(username)
+  def self.menu_options(username)
     puts `clear`
     message         = "OUR FUNKY GYM MENU"
     l               = message.length
     number_of_stars = 80
     puts "\n\n"
-    puts "*" * number_of_stars
-    puts "*" + "\s" * (number_of_stars - 2) + "*"
-    puts "*" + "\s" * ((number_of_stars - 2 - l) / 2) + message + "\s" * ((number_of_stars - 2 - l) / 2) + "*"
-    puts "*" + "\s" * (number_of_stars - 2) + "*"
-    puts "*" * number_of_stars
+    puts "*".colorize (:red) * number_of_stars
+    puts "*".colorize(:red) + "\s" * (number_of_stars - 2) + "*".colorize(:red)
+    puts "*".colorize(:red) + "\s" * ((number_of_stars - 2 - l) / 2) + message.colorize(:yellow) + "\s" * ((number_of_stars - 2 - l) / 2) + "*".colorize(:red)
+    puts "*".colorize(:red) + "\s" * (number_of_stars - 2) + "*".colorize(:red)
+    puts "*".colorize(:red) * number_of_stars
     puts "\n\n"
     space = "\s" * 5
     puts space
-    puts space + "Hello #{username.capitalize}! Select option that you want to do:"
+    puts space + "Hello".colorize(:blue) + " #{username.capitalize}".colorize(:yellow) + "! Select option that you want to do:".colorize(:blue)
     puts space + '_' * 50
     puts space
     puts space + '1. Your profile'
@@ -179,11 +184,11 @@ class Cli
 
     else
       puts "\n"
-      puts "\s" * 5 + "What? What? What? What did you say #{username.capitalize}?"
+      puts "\s" * 5 + "#{random_fun_responds}" + " #{username.capitalize}".colorize(:yellow) + "?".colorize(:red)
       puts "\n"
       print "\s" * 5 + "Press ENTER to go back to menu "
       gets
-      status = 'my_stuff'
+      status = 'menu_options'
     end
   end
 
@@ -191,20 +196,20 @@ class Cli
     # binding.pry
     puts "\n"
     puts "\n"
-    puts "#{"\s" * 5}Your username is #{current_username}"
+    puts "#{"\s" * 5}Your username is ".colorize(:blue) + " #{current_username}".colorize(:yellow)
     puts "\n"
     print "\s" * 5 + "Press ENTER to go back to menu "
     gets
-    status = 'my_stuff'
+    status = 'menu_options'
   end
 
   def self.user_classes(username)
     puts ""
     if Signup.find_by(username: username)
-      puts 'Here is the list of your classes:'
+      puts "\s" * 5 + 'Here is the list of your classes:'.colorize(:blue)
       puts "\n"
       i = 0
-      Signup.all.each_with_index do |signup, index|
+      Signup.all.each do |signup|
         if signup.username == username
           i += 1
           puts "\s" * 5 + "#{i}. #{signup.class_name.capitalize}"
@@ -213,9 +218,9 @@ class Cli
       puts "\n"
       print "\s" * 5 + "Press ENTER to go back to menu "
       gets
-      status = 'my_stuff'
+      status = 'menu_options'
     else
-      puts "#{"\s" * 5}Sorry #{username.capitalize}! You have no classes"
+      puts "#{"\s" * 5}Sorry".colorize(:blue) + " #{username.capitalize}".colorize(:yellow) + "! You have no classes".colorize(:blue)
       status = 'event_list_new_signup'
     end
   end
@@ -231,7 +236,7 @@ class Cli
        puts "\n"
        print "\s" * 5 + "Press ENTER to go back to menu "
        gets
-       status = 'my_stuff'
+       status = 'menu_options'
 
   end
 
@@ -250,24 +255,25 @@ class Cli
     elsif input == 'pilate' || input == '5'
       new_signup('5. Pilate Class', username)
     else
-      puts "\s" * 5 + "What are you trying to say, #{username.capitalize}?"
+      puts "\s"
+      random_fun_responds
       puts "\s" * 5 + "Just type class name or oder number"
       status = 'chosing_event'
     end
     puts "\n"
-    puts "#{"\s" * 5}You are now signed up for a class number: #{input.capitalize}"
+    puts "#{"\s" * 5}You are now signed up for a class number:" + " #{input.capitalize}".colorize(:blue)
     puts "\n"
     print "\s" * 5 + "Press ENTER to go back to menu "
     gets
-    status = 'my_stuff'
+    status = 'menu_options'
   end
 
   def self.delete(username)
     user = User.find_by(username: username)
     user.destroy
     puts "\s" * 5
-    puts "#{"\s" * 5} Your account is deleted #{username.capitalize}!"
-    puts "#{"\s" * 5} Thank you for giving us your money for so long you...\n"
+    puts "#{"\s" * 5} Your account is deleted #{username.capitalize}!".colorize(:red)
+    puts "#{"\s" * 5} Thank you for giving us your money for so long you...\n".colorize(:blue)
     status = 'exit'
   end
 
@@ -278,7 +284,7 @@ class Cli
 
   def self.event_list_new_signup(username)
     puts ""
-    puts "#{"\s" * 5}Would you like to sign-up for classes? (yes/no)\n"
+    puts "#{"\s" * 5}Would you like to sign-up for classes? (yes/no)\n".colorize(:blue)
     print "\s" * 5
     input2 = gets.chomp.downcase
     if input2 == 'yes'
@@ -294,16 +300,17 @@ class Cli
       puts ""
       print "\s" * 5 + "Press ENTER to go back to menu "
       gets
-      status = 'my_stuff'
+      status = 'menu_options'
     else
-      puts "#{"\s" * 5}What? What?? I didn't catch that!"
+      puts ''
+      random_fun_responds
       status = 'event_list_new_signup'
     end
   end
 
 
   def self.new_username(username)
-    puts "#{"\s" * 5}What would you like your new username to be?"
+    puts "#{"\s" * 5}What would you like your new username to be?".colorize(:blue)
     print "#{"\s" * 5}"
     new_name = gets.chomp
     # User.update(username: new_name)
@@ -311,11 +318,25 @@ class Cli
     user.username = new_name
     user.save
     puts "\n"
-    puts "#{"\s" * 5}" + "Our system has updated your new username: '#{new_name}'."
+    puts "#{"\s" * 5}" + "Our system has updated your new username:" + " '#{new_name}'.".colorize(:blue)
     puts "\n"
     print "\s" * 5 + "Press ENTER to go back to menu "
     gets
     new_name
     # binding.pry
+  end
+
+  def self.random_fun_responds
+    responds = [
+      "#{"\s" * 5}What's the heck? I don't understanding a word you said",
+      "#{"\s" * 5}Ehh? What did you said again?",
+      "#{"\s" * 5}Sorry! Please type again.",
+      "#{"\s" * 5}Oh, man! You're making me crazy!",
+      "#{"\s" * 5}OMG! Do you know how to type a word?",
+      "#{"\s" * 5}Damn! You are genius! ...but I don't understand.",
+      "#{"\s" * 5}What the heck is that! Common, I don't have all day!"
+
+    ]
+    responds.sample.to_s.colorize(:red)
   end
 end
