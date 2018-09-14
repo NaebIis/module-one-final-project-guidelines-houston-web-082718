@@ -34,6 +34,8 @@ class Cli
           status           = 'my_stuff'
         when 'event_list_new_signup'
           status = Cli.event_list_new_signup(current_username)
+        when 'list_all_events'
+          status = Cli.list_all_events
         when 'exit'
           puts ' '
           puts "\s" * 5 + 'See you next time!'
@@ -66,6 +68,8 @@ class Cli
           # status = User.not_a_member
           current_username = User.not_a_member
           status           = 'my_stuff'
+        when 'list_all_events'
+          status = Cli.list_all_events
         when 'exit'
           puts ' '
           puts "\s" * 5 + 'See you next time!'
@@ -151,7 +155,9 @@ class Cli
     puts space + '3. Update your profile'
     puts space + '4. Delete your profile'
     puts space + '5. Sign-up for classes'
-    puts space + "6. Exit\n"
+
+    puts space + '6. List ALL classes'
+    puts space + "7. Exit\n"
     puts space + '_' * 50
     print space + 'Please type 1, 2, 3, 4 or 5: '
     input = gets.chomp.downcase
@@ -166,7 +172,11 @@ class Cli
     elsif input == '5'
       status = 'event_list_new_signup'
     elsif input == '6'
+      status = 'list_all_events'
+    elsif input == '7'
       status = 'exit'
+
+
     else
       puts "\n"
       puts "\s" * 5 + "What? What? What? What did you say #{username.capitalize}?"
@@ -193,9 +203,11 @@ class Cli
     if Signup.find_by(username: username)
       puts 'Here is the list of your classes:'
       puts "\n"
-      Signup.each_with_index do |signup, index|
+      i = 0
+      Signup.all.each_with_index do |signup, index|
         if signup.username == username
-          puts "\s" * 5 + "#{index +1}. #{signup.class_name.capitalize}"
+          i += 1
+          puts "\s" * 5 + "#{i}. #{signup.class_name.capitalize}"
         end
       end
       puts "\n"
@@ -209,9 +221,19 @@ class Cli
   end
 
 
-  # def self.does_user_have_classes(username)
-  #
-  # end
+  def self.list_all_events
+       puts "\n"
+        puts "\s" * 5 + "Here is the list of our classes:"
+        puts ""
+        Event.all.each_with_index do |event, index|
+          puts "\s" * 5 + " #{index + 1}. #{event.name}"
+        end
+       puts "\n"
+       print "\s" * 5 + "Press ENTER to go back to menu "
+       gets
+       status = 'my_stuff'
+
+  end
 
   def self.chosing_event(username)
     puts ""
@@ -264,7 +286,7 @@ class Cli
       puts "\s" * 5 + "Here is the list of classes:"
       puts ""
       Event.all.each_with_index do |event, index|
-        puts "\s" * 5 + " #{index +1}. #{event.name}"
+        puts "\s" * 5 + " #{index + 1}. #{event.name}"
       end
       puts "\n"
       status = 'chosing_event'

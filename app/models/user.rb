@@ -15,11 +15,13 @@ class User < ActiveRecord::Base
   end
 
   def self.not_a_member
-    puts "\s" * 5 + "You are not a member!"
+    puts ""
+    puts "\s" * 5 + "You are not a member!\n"
     puts "\s" * 5 + "would you like to join our gym?"
     print "\s" * 5
     input = gets.chomp.downcase
     if input == "yes"
+      puts ""
       puts "\s" * 5 + 'What do you want your username to be?'
       print "\s" * 5
       name = gets.chomp.downcase
