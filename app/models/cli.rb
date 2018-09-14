@@ -36,6 +36,8 @@ class Cli
           status = Cli.event_list_new_signup(current_username)
         when 'list_all_events'
           status = Cli.list_all_events
+        when 'everyone_in_a_class'
+          status = Cli.everyone_in_a_class
         when 'exit'
           puts ' '
           puts "\s" * 5 + 'See you next time!'
@@ -74,6 +76,8 @@ class Cli
             end
         when 'list_all_events'
           status = Cli.list_all_events
+        when 'everyone_in_a_class'
+          status = Cli.everyone_in_a_class
         when 'exit'
           puts ' '
           puts "\s" * 5 + 'See you next time!'
@@ -162,7 +166,8 @@ class Cli
     puts space + '5. Sign-up for classes'
 
     puts space + '6. List ALL classes'
-    puts space + "7. Exit\n"
+    puts space + '7. List ALL users from a class'
+    puts space + "8. Exit\n"
     puts space + '_' * 50
     print space + 'Please type 1, 2, 3, 4 or 5: '
     input = gets.chomp.downcase
@@ -179,6 +184,8 @@ class Cli
     elsif input == '6'
       status = 'list_all_events'
     elsif input == '7'
+      status = 'everyone_in_a_class'
+    elsif input == '8'
       status = 'exit'
 
 
@@ -271,6 +278,8 @@ class Cli
   def self.delete(username)
     user = User.find_by(username: username)
     user.destroy
+    my_class = Signup.find_by(username: username)
+    my_class.destroy
     puts "\s" * 5
     puts "#{"\s" * 5} Your account is deleted #{username.capitalize}!".colorize(:red)
     puts "#{"\s" * 5} Thank you for giving us your money for so long you...\n".colorize(:blue)
@@ -314,9 +323,18 @@ class Cli
     print "#{"\s" * 5}"
     new_name = gets.chomp
     # User.update(username: new_name)
+    signup_with_new_name = Signup.all.select do |signup|
+      signup.username == username
+      end
+    signup_with_new_name.each do |signup_username|
+      signup_username.username = new_name
+      signup_username.save
+    end
+
     user          = User.find_by(username: username)
     user.username = new_name
     user.save
+
     puts "\n"
     puts "#{"\s" * 5}" + "Our system has updated your new username:" + " '#{new_name}'.".colorize(:blue)
     puts "\n"
@@ -324,6 +342,45 @@ class Cli
     gets
     new_name
     # binding.pry
+  end
+
+  def self.everyone_in_a_class
+    puts ""
+    puts "\n"
+    puts "\s" * 5 + "Here is the list of our classes:"
+    puts ""
+    Event.all.each_with_index do |event, index|
+      puts "\s" * 5 + " #{index + 1}. #{event.name}"
+    end
+    puts "\n"
+    puts ""
+    print "#{"\s" * 5}Please select the class number you want to see members: ".colorize(:blue)
+    input = gets.chomp.downcase
+    if input == 'yoga' || input == '1'
+      class_name = Signup.where("class_name = ?", 'Yoga Class')
+      class_name.each {|c| puts "\s" * 5 + c.username}
+    elsif input == 'spinning' || input == '2'
+      class_name =  Signup.where(class_name:'Spinning Class')
+      class_name.each {|c| puts "\s" * 5 + c.username}
+    elsif input == 'swimming' || input == '3'
+      class_name =  Signup.where(class_name: 'Swimming Class')
+      class_name.each {|c| puts "\s" * 5 + c.username}
+    elsif input == 'kickboxing' || input == '4'
+      class_name =  Signup.where(class_name: 'Kickboxing Class')
+      class_name.each {|c| puts "\s" * 5 + c.username}
+    elsif input == 'pilate' || input == '5'
+      class_name =  Signup.where(class_name: 'Pilate Class')
+      class_name.each {|c| puts "\s" * 5 + c.username}
+    else
+      puts "\s"
+      random_fun_responds
+      puts "\s" * 5 + "Just type class name or oder number"
+      status = 'chosing_event'
+    end
+    puts "\n"
+    print "\s" * 5 + "Press ENTER to go back to menu "
+    gets
+    status = "menu_options"
   end
 
   def self.random_fun_responds
@@ -335,7 +392,6 @@ class Cli
       "#{"\s" * 5}OMG! Do you know how to type a word?",
       "#{"\s" * 5}Damn! You are genius! ...but I don't understand.",
       "#{"\s" * 5}What the heck is that! Common, I don't have all day!"
-
     ]
     responds.sample.to_s.colorize(:red)
   end

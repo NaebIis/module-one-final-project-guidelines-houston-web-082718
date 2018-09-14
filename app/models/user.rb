@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   has_many :events, through: :signup
 
 
-  def self.new_user
+  def self.new_user(username)
     puts ""
     puts "\s" * 5 + "Type your new username".colorize(:blue)
     print "\s" * 5
